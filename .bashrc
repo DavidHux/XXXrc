@@ -11,6 +11,21 @@ esac
 # my addition 
 md () { [ $# = 1 ] && mkdir -p "$@" && cd "$@" || echo "Error - directory $0 already exists"; }
 
+unameOut="$(uname -s)"
+case "${unameOut}" in
+	Linux*)     machine=Linux;;
+	Darwin*)    machine=Mac;;
+	CYGWIN*)    machine=Cygwin;;
+	MINGW*)     machine=MinGw;;
+	*)          machine="UNKNOW:${unameOut}"
+esac
+
+se () {
+	case $machine in
+		Mac*)     open "https://www.google.com/search?q=$*";;
+		*)        echo $machine; echo "se command cannot be used";;
+	esac
+}
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -59,21 +74,21 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
+#if [ "$color_prompt" = yes ]; then
+#    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+#else
+#    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+#fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+#case "$TERM" in
+#xterm*|rxvt*)
+#    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+#    ;;
+#*)
+#    ;;
+#esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
